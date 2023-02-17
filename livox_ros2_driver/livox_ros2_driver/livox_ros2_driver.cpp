@@ -164,7 +164,7 @@ LivoxDriver::LivoxDriver(const rclcpp::NodeOptions & node_options)
     RCLCPP_INFO(this->get_logger(), "Data Source is lvx file.");
 
     std::string cmdline_file_path;
-    this->get_parameter("cmdline_file_path", cmdline_file_path);
+    this->get_parameter("lvx_file_path", cmdline_file_path);
 
     do {
       if (!IsFilePathValid(cmdline_file_path.c_str())) {
@@ -182,7 +182,7 @@ LivoxDriver::LivoxDriver(const rclcpp::NodeOptions & node_options)
       lddc_ptr_->CreateBagFile(rosbag_file_path);
       int ret = read_lvx->InitLdsLvx(cmdline_file_path.c_str());
       if (!ret) {
-        RCLCPP_INFO(this->get_logger(), "Init lds lvx file success!");
+        RCLCPP_INFO(this->get_logger(), "Init lds lvx file success! %s", rosbag_file_path.c_str());
       } else {
         RCLCPP_ERROR(this->get_logger(), "Init lds lvx file fail!");
       }

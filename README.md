@@ -1,93 +1,41 @@
-# Livox ROS2 Driver([览沃ROS2驱动程序中文说明](https://github.com/Livox-SDK/livox_ros2_driver/blob/master/README_CN.md))
-
-The Livox ROS2 driver is a driver package based on ROS2, specifically used to connect LiDAR products produced by Livox. The driver is recommended to run on ROS2 foxy.
-
-## 0. Version and Release History
-
-### 0.1 Current Version
-
-[v0.0.1-beta](https://github.com/Livox-SDK/livox_ros2_driver/releases/tag/v0.0.1-beta)
-
-### 0.2 Release History
-
-[Release History](https://github.com/Livox-SDK/livox_ros2_driver/releases/tag/v0.0.1-beta)
-
-## 1. Install dependencies
-
-Before running Livox ROS2 driver under ubuntu18.04, ROS2 (dashing, ubuntu18.04), colcon build tool and Livox-SDK must be installed.
-
-### 1.1 ROS2 installation
-
-For ROS2 installation, please refer to the ROS2 installation guide :
-
-[ROS2 installation guide](https://index.ros.org/doc/ros2/Installation/Dashing/Linux-Install-Debians/)
-
-&ensp;&ensp;&ensp;&ensp;***Note :***
-
-&ensp;&ensp;&ensp;&ensp;（1）Be sure to install the desktop version of ROS2 (ros-dashing-desktop);
-
-&ensp;&ensp;&ensp;&ensp;（2）After installing ROS2 dashing, please follow the installation guide to configure the system environment;
-
-### 1.2 install colcon
-
-Please refer to the following link for colcon installation：
-
-[colcon installation](https://index.ros.org/doc/ros2/Tutorials/Colcon-Tutorial/#install-colcon)
-
-## 2. Get and build livox_ros2_driver
+# Get and build livox_ros2_driver
 
 1. Get livox_ross_driver from GitHub :
 
    `git clone https://github.com/Livox-SDK/livox_ros2_driver.git ws_livox/src`
 
-&ensp;&ensp;&ensp;&ensp;***Note :***
+1. Install SDK
+```
+$ cd ws_livox/src/livox/Livox-SDK/build
+$ cmake .. && make -j8 && sudo make install
+$ cd ../../../..
+```
 
-&ensp;&ensp;&ensp;&ensp;Be sure to use the above command to clone the code to the local, otherwise it will compile error due to the file path problem.
+1. Use the following command to build livox_ros2_driver :
 
-2. Use the following command to build livox_ros2_driver :
+```bash
+$ cd ws_livox
+$ colcon build
+```
 
-   ```bash
-   cd ws_livox
-   colcon build
-   ```
+1. Source the environment
 
-3. Source the environment
+`$ source ./install/setup.sh`
 
-   `source ./install/setup.sh`
+# Time Sync
+```
+$ ptp4l -S -m -i en
+```
 
-## 3. Run livox_ros2_driver
+## Run livox_ros2_driver
 
-### 3.1 Use the ROS2 launch file to load livox_ros2_driver
+```
+ros2 launch livox_ros2_driver livox.launch.xml cmdline_input_bd_code:=XXXXX
+```
 
-   Before using the launch file to load livox_ros2_driver, first enter the directory where the launch file is located, the command is as follows：
+Where XXX is the Broadcast code. See below.
 
-   `cd ./src/livox_ros2_driver/launch`
-
-   The command format for loading livox_ros2_driver using the launch file is as follows：
-
-   `ros2 launch [launch file]`
-
-### 3.2 ROS2 launch load command example
-
-   In lidar connection mode, the commands to load livox_ros2_driver and rviz2 are as follows :
-   `ros2 launch livox_lidar_rviz_launch.py`
-
-   In hub connection mode, the commands to load livox_ros2_driver and rviz2 are as follows :
-   `ros2 launch livox_hub_rviz_launch.py`
-
-### 3.3 ROS2 launch loads livox_ros2_driver precautions
-
-1. The launch method of ros2 is completely different from that of ros1. The launch file of ros2 is actually a python script;
-
-2. The ros2 driver no longer supports specifying the LiDAR device to be connected under the command line, and only supports configuring the corresponding LiDAR broadcast code and other parameters in the json configuration file;
-
-3. When the connection status of the device specified in the configuration file is configured to enable connection (true), the livox_ros2_driver will only connect to the device specified in the configuration file;
-
-4. When the connection status of the devices specified in the configuration file is all configured to prohibit connection (false), livox_ros2_driver will automatically connect all the devices that are scanned;
-
-5. the json configuration file is in the "ws_livox/src/livox_ros2_driver/config" directory;
-
-### 3.4 Livox LiDAR Broadcast code introduction
+# Livox LiDAR Broadcast code introduction
 
 Each Livox LiDAR device has a unique broadcast code. The broadcast code consists of a 14-character serial number and an additional character (1, 2, or 3), for a total of 15 characters. The above serial number is located under the QR code of the LiDAR body shell (see the figure below). The broadcast code is used to specify the LiDAR device to be connected. The detailed format is as follows :
 
@@ -97,22 +45,7 @@ Each Livox LiDAR device has a unique broadcast code. The broadcast code consists
 
 &ensp;&ensp;&ensp;&ensp;X in the figure above corresponds to 1 in MID-100_Left/MID-40/Horizon/Tele products, 2 in MID-100_Middle, and 3 in MID-100_Right.
 
-## 4. Launch file and livox_ros2_driver internal parameter configuration instructions
-
-### 4.1 Launch file configuration instructions
-
-All launch files of livox_ros2_driver are in the "ws_livox/src/livox_ros2_driver/launch" directory. Different launch files have different configuration parameter values and are used in different scenarios :
-
-| launch file name          | Description                                                  |
-| ------------------------- | ------------------------------------------------------------ |
-| livox_lidar_rviz_launch.py   | Connect to Livox LiDAR device<br>Publish pointcloud2 format data<br>Autoload rviz |
-| livox_hub_rviz_launch.py     | Connect to Livox Hub device<br>Publish pointcloud2 format data<br>Autoload rviz |
-| livox_lidar_launch.py        | Connect to Livox LiDAR device<br>Publish pointcloud2 format data |
-| livox_hub_launch.py          | Connect to Livox LiDAR device<br>Publish pointcloud2 format data |
-| livox_lidar_msg_launch.py    | Connect to Livox LiDAR device<br>Publish livox customized pointcloud data |
-| livox_hub_msg_launch.py      | Connect to Livox Hub device<br>Publish livox customized pointcloud data |
-
-### 4.2 Livox_ros2_driver internal main parameter configuration instructions
+# Livox_ros2_driver internal main parameter configuration instructions
 
 All internal parameters of Livox_ros2_driver are in the launch file. Below are detailed descriptions of the three commonly used parameters :
 

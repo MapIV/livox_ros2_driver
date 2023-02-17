@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<launch>
+    <!--    <set_parameter name="use_sim_time" value="true" />-->
+    <arg name="xfer_format" default="0" description="0=Pointcloud2(PointXYZRTL) | 1=Customized pointcloud format" />
+    <arg name="multi_topic" default="0" />
+    <arg name="data_src" default="0" description="0=Lidar | 1=Hub | 2=LVX" />
+    <arg name="publish_freq" default="10.0" description="Hz" />
+    <arg name="output_data_type" default="0" />
+    <arg name="lvx_file_path" default="" />
+    <arg name="user_config_path" default="$(find-pkg-share livox_ros2_driver)/config/livox_lidar_config.json" />
+    <arg name="cmdline_input_bd_code" description="Serial Number + (1=MID-100_Left/MID-40/Horizon/Tele | 2=MID-100_Middle | 3=MID-100_Right" />
+    <arg name="frame_id" default="livox" />
+
+    <node pkg="livox_ros2_driver" exec="livox_ros2_driver_node" name="livox_ros2_driver" output="screen">
+        <param name="xfer_format" value="$(var xfer_format)" />
+        <param name="multi_topic" value="$(var multi_topic)" />
+        <param name="data_src" value="$(var data_src)" />
+        <param name="publish_freq" value="$(var publish_freq)" />
+        <param name="output_data_type" value="$(var output_data_type)" />
+        <param name="lvx_file_path" value="$(var lvx_file_path)" />
+        <param name="user_config_path" value="$(var user_config_path)" />
+        <param name="cmdline_input_bd_code" value="$(var cmdline_input_bd_code)" />
+        <param name="frame_id" value="$(var frame_id)" />
+    </node>
+</launch>
