@@ -316,11 +316,11 @@ uint32_t Lddc::PublishPointcloudData(LidarDataQueue *queue, uint32_t packet_num,
     last_timestamp = timestamp;
   }
 
-  rclcpp::Publisher<PointCloud>::SharedPtr publisher =
-      std::dynamic_pointer_cast<rclcpp::Publisher<PointCloud>>
-      (GetCurrentPublisher(handle));
+  // rclcpp::Publisher<PointCloud>::SharedPtr publisher =
+  //     std::dynamic_pointer_cast<rclcpp::Publisher<PointCloud>>
+  //     (GetCurrentPublisher(handle));
   if (kOutputToRos == output_type_) {
-    publisher->publish(cloud);
+    // publisher->publish(cloud);
   } else {
 #if 0    
     if (bag_) {
