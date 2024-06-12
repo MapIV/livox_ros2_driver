@@ -2,7 +2,7 @@
 
 1. Get livox_ross_driver from GitHub :
 
-   `git clone https://github.com/Livox-SDK/livox_ros2_driver.git ws_livox/src`
+   `git clone https://github.com/MapIV/livox_ros2_driver.git`
 
 1. Install SDK
 ```
