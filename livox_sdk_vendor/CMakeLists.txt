@@ -6,8 +6,13 @@ find_package(ament_cmake REQUIRED)
 
 macro(build_livox_sdk)
   set(livox_sdk_REV "v2.3.1")
-  set(extra_cmake_args)
-
+  set(extra_cmake_args
+    -DCMAKE_CXX_STANDARD=14
+    -DCMAKE_CXX_STANDARD_REQUIRED=ON
+    -DCMAKE_CXX_EXTENSIONS=ON
+    -DCMAKE_CXX_FLAGS=-Wno-error=c++20-compat
+  )
+  
   get_property(multi_config GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
   if(NOT multi_config AND DEFINED CMAKE_BUILD_TYPE)
     list(APPEND extra_cmake_args -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE})

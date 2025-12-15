@@ -12,7 +12,7 @@ publish_freq  = 10.0 # freqency of publish,1.0,2.0,5.0,10.0,etc
 output_type   = 0
 frame_id      = 'livox_frame'
 lvx_file_path = '/home/livox/livox_test.lvx'
-cmdline_bd_code = 'livox0000000001'
+cmdline_bd_code = '3GGDN2J00210771'
 
 cur_path = os.path.split(os.path.realpath(__file__))[0] + '/'
 cur_config_path = cur_path + '../config'
